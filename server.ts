@@ -21,8 +21,50 @@ app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
+app.get("/health", async (req, res) => {
+  try {
+    const memoryUsage = process.memoryUsage();
+    
+    // Check storage availability
+    let storageStatus = "ok";
+    try {
+      const testFile = path.join(os.tmpdir(), `health_test_${Date.now()}.txt`);
+      await fs.promises.writeFile(testFile, "test");
+      await fs.promises.unlink(testFile);
+    } catch (e) {
+      storageStatus = "failed";
+    }
+
+    // Check environment variables for providers
+    const envStatus = {
+      replicate: !!process.env.REPLICATE_API_TOKEN,
+      fal: !!process.env.FAL_KEY,
+      huggingface: !!process.env.HUGGINGFACE_API_KEY,
+      deepai: !!process.env.DEEPAI_API_KEY,
+      clipdrop: !!process.env.CLIPDROP_API_KEY,
+    };
+
+    // Fast check if at least one provider has keys
+    const hasProviders = Object.values(envStatus).some(val => val === true);
+
+    res.json({
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      server: {
+        uptime: process.uptime(),
+        memory: {
+          rss: `${Math.round(memoryUsage.rss / 1024 / 1024)}MB`,
+          heapTotal: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)}MB`,
+          heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)}MB`,
+        }
+      },
+      storage: storageStatus,
+      environment: envStatus,
+      ai_providers_configured: hasProviders
+    });
+  } catch (error: any) {
+    res.status(500).json({ status: "error", error: error.message });
+  }
 });
 
 const limiter = rateLimit({
@@ -77,9 +119,16 @@ app.post("/api/enhance/image", upload.single("file"), async (req, res) => {
       (filePath) => getPublicUrl(req, fileId)
     );
 
+    // Clean up file immediately after processing is complete
+    publicFiles.delete(fileId);
+    fs.promises.unlink(req.file.path).catch(() => {});
+
     res.json({ output });
   } catch (error: any) {
     console.error("Enhance Image Error:", error);
+    if (req.file) {
+      fs.promises.unlink(req.file.path).catch(() => {});
+    }
     res.status(500).json({ error: error.message || "Failed to process image" });
   }
 });
@@ -104,9 +153,16 @@ app.post("/api/enhance/video", upload.single("file"), async (req, res) => {
       (filePath) => getPublicUrl(req, fileId)
     );
 
+    // Clean up file immediately after processing is complete
+    publicFiles.delete(fileId);
+    fs.promises.unlink(req.file.path).catch(() => {});
+
     res.json({ output });
   } catch (error: any) {
     console.error("Enhance Video Error:", error);
+    if (req.file) {
+      fs.promises.unlink(req.file.path).catch(() => {});
+    }
     res.status(500).json({ error: error.message || "Failed to process video" });
   }
 });
@@ -138,6 +194,19 @@ app.get("/api/health", async (req, res) => {
   } catch (error: any) {
     res.status(500).json({ status: "error", error: error.message });
   }
+});
+
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error("Global Error:", err);
+  res.status(500).json({ error: "Internal Server Error", details: err.message });
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
+
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
 });
 
 async function startServer() {

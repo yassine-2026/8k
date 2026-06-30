@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import FileUploader from "../components/FileUploader";
 import CompareSlider from "../components/CompareSlider";
 import { Download, Loader2, Sparkles, AlertCircle } from "lucide-react";
@@ -13,6 +14,9 @@ export default function ImageEnhancer() {
   const [faceEnhance, setFaceEnhance] = useState(true);
 
   const handleFileSelect = (selectedFile: File) => {
+    if (originalUrl) {
+      URL.revokeObjectURL(originalUrl);
+    }
     setFile(selectedFile);
     setOriginalUrl(URL.createObjectURL(selectedFile));
     setEnhancedUrl(null);
@@ -20,6 +24,9 @@ export default function ImageEnhancer() {
   };
 
   const handleClear = () => {
+    if (originalUrl) {
+      URL.revokeObjectURL(originalUrl);
+    }
     setFile(null);
     setOriginalUrl(null);
     setEnhancedUrl(null);
@@ -49,13 +56,15 @@ export default function ImageEnhancer() {
         throw new Error(data.error || "Failed to process image");
       }
 
-      if (data.output) {
-        setEnhancedUrl(data.output);
+      if (data.output && data.output.outputUrl) {
+        setEnhancedUrl(data.output.outputUrl);
+        toast.success(`Enhanced using ${data.output.providerName} in ${data.output.processingTimeMs}ms`);
       } else {
         throw new Error("No output received from the server");
       }
     } catch (err: any) {
       setError(err.message);
+      toast.error(err.message);
     } finally {
       setIsProcessing(false);
     }

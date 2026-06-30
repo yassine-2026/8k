@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import FileUploader from "../components/FileUploader";
 import { Download, Loader2, Sparkles, AlertCircle, Video as VideoIcon } from "lucide-react";
 
@@ -10,6 +11,9 @@ export default function VideoEnhancer() {
   const [error, setError] = useState<string | null>(null);
 
   const handleFileSelect = (selectedFile: File) => {
+    if (originalUrl) {
+      URL.revokeObjectURL(originalUrl);
+    }
     setFile(selectedFile);
     setOriginalUrl(URL.createObjectURL(selectedFile));
     setEnhancedUrl(null);
@@ -17,6 +21,9 @@ export default function VideoEnhancer() {
   };
 
   const handleClear = () => {
+    if (originalUrl) {
+      URL.revokeObjectURL(originalUrl);
+    }
     setFile(null);
     setOriginalUrl(null);
     setEnhancedUrl(null);
@@ -44,13 +51,15 @@ export default function VideoEnhancer() {
         throw new Error(data.error || "Failed to process video");
       }
 
-      if (data.output) {
-        setEnhancedUrl(data.output);
+      if (data.output && data.output.outputUrl) {
+        setEnhancedUrl(data.output.outputUrl);
+        toast.success(`Enhanced using ${data.output.providerName} in ${data.output.processingTimeMs}ms`);
       } else {
         throw new Error("No output received from the server");
       }
     } catch (err: any) {
       setError(err.message);
+      toast.error(err.message);
     } finally {
       setIsProcessing(false);
     }
