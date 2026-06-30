@@ -8,7 +8,6 @@ import { HuggingFaceProvider } from "./providers/HuggingFaceProvider";
 import { DeepAIProvider } from "./providers/DeepAIProvider";
 import { FalProvider } from "./providers/FalProvider";
 import { ClipdropProvider } from "./providers/ClipdropProvider";
-import { CloudinaryProvider } from "./providers/CloudinaryProvider";
 import { TaskQueue } from "./queue";
 import { ResultCache } from "./cache";
 
@@ -24,7 +23,6 @@ export class AIManager {
     this.providers.push(new HuggingFaceProvider());
     this.providers.push(new ClipdropProvider());
     this.providers.push(new DeepAIProvider());
-    this.providers.push(new CloudinaryProvider());
     
     this.imageQueue = new TaskQueue(4);
     this.videoQueue = new TaskQueue(2);
@@ -56,7 +54,7 @@ export class AIManager {
 
       try {
         const startTime = Date.now();
-        // Skip actual enhancement for cloudinary/replicate during fast health check to save quota, unless required.
+        // Skip actual enhancement for replicate during fast health check to save quota, unless required.
         // We will do a full test as requested by user.
         await provider.enhanceImage(testFilePath, "image/png", { scale: 2, faceEnhance: false }, () => testPublicUrl);
         results.push({
