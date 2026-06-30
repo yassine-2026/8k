@@ -1,6 +1,30 @@
-import { Clock, Image as ImageIcon, Video, Trash2, RotateCw } from "lucide-react";
+import { Clock, Image as ImageIcon, Video, Trash2, RotateCw, Server, Activity, CheckCircle2, XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+
+interface ProviderStats {
+  name: string;
+  successCount: number;
+  failureCount: number;
+  lastUsed: string | null;
+  status: 'active' | 'inactive';
+}
 
 export default function Dashboard() {
+  const [providerStats, setProviderStats] = useState<ProviderStats[]>([]);
+  const [loadingStats, setLoadingStats] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/stats")
+      .then(res => res.json())
+      .then(data => {
+        if (data.providers) {
+          setProviderStats(data.providers);
+        }
+      })
+      .catch(err => console.error("Failed to fetch stats:", err))
+      .finally(() => setLoadingStats(false));
+  }, []);
+
   // Demo data to represent user's recent history
   const recentFiles = [
     { id: 1, name: "portrait_low_res.jpg", type: "image", date: "2 mins ago", status: "Completed", size: "2.4 MB" },
@@ -50,6 +74,67 @@ export default function Dashboard() {
               <h3 className="text-2xl font-bold text-white mt-1">14h 20m</h3>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden mb-12">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Server className="w-5 h-5 text-blue-400" />
+            <h2 className="text-lg font-bold text-white">AI Provider Health</h2>
+          </div>
+          {loadingStats && <div className="w-4 h-4 rounded-full border-2 border-white/20 border-t-white animate-spin" />}
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-white/10 bg-black/20">
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Provider</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Status</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Success</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Failed</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Last Used</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {providerStats.map((provider, idx) => (
+                <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
+                  <td className="p-4 text-white font-medium">{provider.name}</td>
+                  <td className="p-4">
+                    {provider.status === 'active' ? (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span> Active
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-500/10 text-slate-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Inactive / Missing Key
+                      </span>
+                    )}
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-2 text-green-400">
+                      <CheckCircle2 className="w-4 h-4" />
+                      {provider.successCount}
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-2 text-red-400">
+                      <XCircle className="w-4 h-4" />
+                      {provider.failureCount}
+                    </div>
+                  </td>
+                  <td className="p-4 text-white/60 text-sm">
+                    {provider.lastUsed ? new Date(provider.lastUsed).toLocaleString() : 'Never'}
+                  </td>
+                </tr>
+              ))}
+              {providerStats.length === 0 && !loadingStats && (
+                <tr>
+                  <td colSpan={5} className="p-8 text-center text-white/40">No provider data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
