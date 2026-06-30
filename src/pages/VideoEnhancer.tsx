@@ -60,7 +60,7 @@ export default function VideoEnhancer() {
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-white mb-4">AI Video Enhancer</h1>
-        <p className="text-white/60 max-w-2xl mx-auto">
+        <p className="text-slate-400 max-w-2xl mx-auto">
           Upscale low-resolution videos, reduce noise, and increase frame rate using state-of-the-art AI video restoration models.
         </p>
       </div>
@@ -85,8 +85,8 @@ export default function VideoEnhancer() {
           )}
 
           {file && (
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-sm">
-              <div className="aspect-video bg-black rounded-xl overflow-hidden mb-6 border border-white/10">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-lg">
+              <div className="aspect-video bg-slate-900 rounded-xl overflow-hidden mb-6 border border-white/10 relative">
                 {originalUrl && (
                   <video 
                     src={originalUrl} 
@@ -94,12 +94,15 @@ export default function VideoEnhancer() {
                     className="w-full h-full object-contain"
                   />
                 )}
+                <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-mono border border-white/10 text-slate-200">
+                  ORIGINAL
+                </div>
               </div>
 
               <button
                 onClick={processVideo}
                 disabled={isProcessing}
-                className="w-full py-4 bg-white text-black rounded-xl font-bold text-lg flex items-center justify-center gap-2 hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold text-sm shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-transform text-white flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isProcessing ? (
                   <>
@@ -123,7 +126,7 @@ export default function VideoEnhancer() {
             <div className="flex gap-3">
               <button
                 onClick={handleClear}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors"
+                className="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-xs font-bold transition-colors"
               >
                 Enhance Another
               </button>
@@ -132,32 +135,38 @@ export default function VideoEnhancer() {
                 download="enhanced-video.mp4"
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium flex items-center gap-2 shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center gap-2 shadow-lg shadow-blue-900/20 transition-all"
               >
                 <Download className="w-4 h-4" />
-                Download Video
+                Download Result
               </a>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-white/60 mb-2">
+              <div className="flex items-center gap-2 text-slate-400 mb-2">
                 <VideoIcon className="w-4 h-4" />
-                <span className="font-medium">Original</span>
+                <span className="text-[10px] uppercase tracking-widest font-bold">Original</span>
               </div>
-              <div className="aspect-video bg-black rounded-xl overflow-hidden border border-white/10">
-                <video src={originalUrl!} controls className="w-full h-full object-contain" />
+              <div className="aspect-video bg-slate-900 rounded-2xl overflow-hidden border border-white/10 relative">
+                <video src={originalUrl!} controls className="w-full h-full object-contain grayscale opacity-60" />
+                <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-mono border border-white/10 text-slate-200 pointer-events-none">
+                  ORIGINAL
+                </div>
               </div>
             </div>
             
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-blue-400 mb-2">
                 <Sparkles className="w-4 h-4" />
-                <span className="font-medium">Enhanced</span>
+                <span className="text-[10px] uppercase tracking-widest font-bold">AI Enhanced</span>
               </div>
-              <div className="aspect-video bg-black rounded-xl overflow-hidden border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.1)]">
+              <div className="aspect-video bg-slate-900 rounded-2xl overflow-hidden border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.1)] relative">
                 <video src={enhancedUrl} controls autoPlay loop className="w-full h-full object-contain" />
+                <div className="absolute top-4 right-4 bg-blue-600/80 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-mono border border-white/10 text-white pointer-events-none">
+                  AI ENHANCED
+                </div>
               </div>
             </div>
           </div>

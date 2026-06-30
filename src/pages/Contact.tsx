@@ -21,12 +21,12 @@ export default function Contact() {
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold text-white mb-6">Contact Us</h1>
-        <p className="text-xl text-white/60">
+        <p className="text-xl text-slate-400">
           Have a question or need custom enterprise pricing? We're here to help.
         </p>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-sm">
+      <div className="bg-white/5 border border-white/10 rounded-2xl backdrop-blur-lg p-8">
         {status === "success" ? (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -52,47 +52,47 @@ export default function Contact() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium text-white/80">Name</label>
+                <label htmlFor="name" className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block">Name</label>
                 <input 
                   type="text" 
                   id="name" 
                   required
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all"
+                  className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-all"
                   placeholder="John Doe"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-white/80">Email</label>
+                <label htmlFor="email" className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block">Email</label>
                 <input 
                   type="email" 
                   id="email" 
                   required
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all"
+                  className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-all"
                   placeholder="john@example.com"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="subject" className="text-sm font-medium text-white/80">Subject</label>
+              <label htmlFor="subject" className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block">Subject</label>
               <select 
                 id="subject"
-                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all appearance-none"
+                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all appearance-none"
               >
-                <option value="support">Technical Support</option>
-                <option value="billing">Billing Inquiry</option>
-                <option value="enterprise">Enterprise Sales</option>
-                <option value="other">Other</option>
+                <option value="support" className="bg-slate-900">Technical Support</option>
+                <option value="billing" className="bg-slate-900">Billing Inquiry</option>
+                <option value="enterprise" className="bg-slate-900">Enterprise Sales</option>
+                <option value="other" className="bg-slate-900">Other</option>
               </select>
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="message" className="text-sm font-medium text-white/80">Message</label>
+              <label htmlFor="message" className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block">Message</label>
               <textarea 
                 id="message" 
                 rows={5}
                 required
-                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all resize-none"
+                className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-all resize-none"
                 placeholder="How can we help you?"
               ></textarea>
             </div>
@@ -100,7 +100,7 @@ export default function Contact() {
             <button 
               type="submit"
               disabled={status === "loading"}
-              className="w-full py-4 bg-purple-500 hover:bg-purple-600 text-white rounded-xl font-bold text-lg flex items-center justify-center gap-2 disabled:opacity-50 transition-all"
+              className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-blue-900/20 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 transition-transform"
             >
               {status === "loading" ? "Sending..." : (
                 <>

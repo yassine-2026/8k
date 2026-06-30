@@ -45,7 +45,7 @@ export default function CompareSlider({ originalImage, enhancedImage }: CompareS
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-video md:aspect-[4/3] max-w-4xl mx-auto rounded-3xl overflow-hidden select-none cursor-ew-resize bg-black/50 border border-white/10"
+      className="relative w-full aspect-video md:aspect-[4/3] max-w-4xl mx-auto rounded-2xl overflow-hidden select-none cursor-ew-resize bg-slate-900 border border-white/10"
       onMouseDown={(e) => {
         setIsDragging(true);
         handleMove(e.clientX);
@@ -59,10 +59,10 @@ export default function CompareSlider({ originalImage, enhancedImage }: CompareS
       <img
         src={originalImage}
         alt="Original"
-        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+        className="absolute inset-0 w-full h-full object-contain pointer-events-none grayscale opacity-60"
       />
-      <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium text-white/90">
-        Original
+      <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-mono border border-white/10 text-slate-200">
+        ORIGINAL
       </div>
 
       {/* Enhanced Image (Top, clipped) */}
@@ -75,18 +75,18 @@ export default function CompareSlider({ originalImage, enhancedImage }: CompareS
           alt="Enhanced"
           className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
-        <div className="absolute bottom-4 right-4 bg-purple-500/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium text-white">
-          Enhanced
+        <div className="absolute bottom-4 right-4 bg-blue-600/80 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-mono border border-white/10 text-white">
+          AI ENHANCED
         </div>
       </div>
 
       {/* Slider Line */}
       <div
-        className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize flex items-center justify-center"
+        className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)] cursor-ew-resize flex items-center justify-center z-20"
         style={{ left: `${position}%`, transform: "translateX(-50%)" }}
       >
-        <div className="w-8 h-8 bg-white text-black rounded-full shadow-lg flex items-center justify-center border-2 border-white/20">
-          <MoveHorizontal className="w-4 h-4" />
+        <div className="w-10 h-10 bg-white text-slate-900 rounded-full flex items-center justify-center border-4 border-slate-900 shadow-xl">
+          <MoveHorizontal className="w-5 h-5" />
         </div>
       </div>
     </div>

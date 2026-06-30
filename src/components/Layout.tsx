@@ -16,23 +16,27 @@ export default function Layout() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white selection:bg-purple-500/30 flex flex-col font-sans">
-      <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/50 backdrop-blur-xl">
+    <div className="min-h-screen bg-[#050608] text-slate-200 selection:bg-blue-500/30 flex flex-col font-sans relative overflow-x-hidden">
+      {/* Background Mesh Gradients */}
+      <div className="fixed top-[-100px] left-[-100px] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+      <div className="fixed bottom-[-100px] right-[-100px] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+      <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/5 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <Link to="/" className="flex items-center gap-2 group">
-                <div className="p-2 bg-gradient-to-tr from-purple-600 to-blue-500 rounded-xl group-hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all">
                   <Sparkles className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+                <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                   AuraUpscale
                 </span>
               </Link>
             </div>
             
             <nav className="hidden md:block">
-              <ul className="flex items-center gap-8 text-sm font-medium">
+              <ul className="flex items-center gap-8 text-sm font-medium text-slate-400">
                 {navigation.map((item) => {
                   const isActive = location.pathname === item.href;
                   return (
@@ -40,7 +44,7 @@ export default function Layout() {
                       <Link
                         to={item.href}
                         className={`transition-colors hover:text-white ${
-                          isActive ? "text-white" : "text-white/60"
+                          isActive ? "text-white border-b-2 border-blue-500 pb-1" : ""
                         }`}
                       >
                         {item.name}
@@ -52,12 +56,12 @@ export default function Layout() {
             </nav>
 
             <div className="hidden md:flex items-center gap-4">
-              <Link to="/contact" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
+              <Link to="/contact" className="px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-xs font-medium text-white">
                 Contact
               </Link>
               <Link
                 to="/dashboard"
-                className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition-transform hover:scale-105 active:scale-95"
+                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-1.5 text-xs font-bold text-white shadow-lg shadow-blue-900/20 transition-transform active:scale-[0.98]"
               >
                 <LogIn className="h-4 w-4" />
                 Get Started
@@ -77,7 +81,7 @@ export default function Layout() {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl absolute w-full">
+          <div className="md:hidden border-t border-white/10 bg-[#050608]/95 backdrop-blur-xl absolute w-full">
             <div className="space-y-1 px-4 pb-3 pt-2">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
@@ -87,7 +91,7 @@ export default function Layout() {
                     to={item.href}
                     onClick={() => setIsMenuOpen(false)}
                     className={`block rounded-md px-3 py-2 text-base font-medium ${
-                      isActive ? "bg-white/10 text-white" : "text-white/60 hover:bg-white/5 hover:text-white"
+                      isActive ? "bg-white/10 text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
                     }`}
                   >
                     {item.name}
@@ -99,11 +103,11 @@ export default function Layout() {
         )}
       </header>
 
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col relative z-10">
         <Outlet />
       </main>
 
-      <footer className="border-t border-white/10 bg-[#0A0A0A] py-12">
+      <footer className="bg-white/5 backdrop-blur-2xl border-t border-white/10 py-12 relative z-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="col-span-2 md:col-span-1">

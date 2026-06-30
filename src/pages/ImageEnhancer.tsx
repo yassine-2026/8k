@@ -65,7 +65,7 @@ export default function ImageEnhancer() {
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-white mb-4">AI Image Enhancer</h1>
-        <p className="text-white/60 max-w-2xl mx-auto">
+        <p className="text-slate-400 max-w-2xl mx-auto">
           Upscale and enhance your images up to 8K resolution. Removes noise, sharpens details, and restores faces automatically.
         </p>
       </div>
@@ -89,21 +89,21 @@ export default function ImageEnhancer() {
           )}
 
           {file && (
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-sm">
-              <h3 className="text-lg font-semibold text-white mb-6">Enhancement Settings</h3>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-lg">
+              <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-6 block">Enhancement Settings</label>
               
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">Upscale Factor</label>
-                  <div className="grid grid-cols-3 gap-3">
+                  <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-3 block">Output Resolution</label>
+                  <div className="grid grid-cols-3 gap-2">
                     {["2", "4", "8"].map((val) => (
                       <button
                         key={val}
                         onClick={() => setScale(val)}
-                        className={`py-3 rounded-xl font-medium transition-all ${
+                        className={`py-2 rounded-lg text-xs font-medium transition-all border ${
                           scale === val
-                            ? "bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]"
-                            : "bg-white/5 text-white/60 hover:bg-white/10"
+                            ? "bg-blue-600/20 border-blue-500/50 text-blue-400"
+                            : "bg-white/5 border-white/10 text-slate-200 hover:border-blue-500/50"
                         }`}
                       >
                         {val}x
@@ -112,10 +112,10 @@ export default function ImageEnhancer() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
                   <div>
-                    <h4 className="text-white font-medium">Face Restoration</h4>
-                    <p className="text-sm text-white/50">Enhance and recover facial details</p>
+                    <h4 className="text-xs text-slate-200">Face Restoration</h4>
+                    <p className="text-[10px] text-slate-400 mt-1">Enhance and recover facial details</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -124,14 +124,14 @@ export default function ImageEnhancer() {
                       checked={faceEnhance}
                       onChange={(e) => setFaceEnhance(e.target.checked)}
                     />
-                    <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                    <div className="w-8 h-4 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
 
                 <button
                   onClick={processImage}
                   disabled={isProcessing}
-                  className="w-full py-4 bg-white text-black rounded-xl font-bold text-lg flex items-center justify-center gap-2 hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold text-sm shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-transform text-white flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isProcessing ? (
                     <>
@@ -156,7 +156,7 @@ export default function ImageEnhancer() {
             <div className="flex gap-3">
               <button
                 onClick={handleClear}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors"
+                className="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-xs font-bold transition-colors"
               >
                 Enhance Another
               </button>
@@ -165,10 +165,10 @@ export default function ImageEnhancer() {
                 download="enhanced-image.png"
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium flex items-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center gap-2 shadow-lg shadow-blue-900/20 transition-all"
               >
                 <Download className="w-4 h-4" />
-                Download HD
+                Download Result
               </a>
             </div>
           </div>
@@ -178,21 +178,21 @@ export default function ImageEnhancer() {
           )}
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-            <div className="p-4 bg-white/5 rounded-xl border border-white/10">
-              <p className="text-white/50 text-sm mb-1">New Resolution</p>
-              <p className="text-white font-medium text-lg">Up to 8K</p>
+            <div className="p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-lg">
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">New Resolution</p>
+              <p className="text-white font-medium text-sm">Up to 8K</p>
             </div>
-            <div className="p-4 bg-white/5 rounded-xl border border-white/10">
-              <p className="text-white/50 text-sm mb-1">Format</p>
-              <p className="text-white font-medium text-lg">PNG</p>
+            <div className="p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-lg">
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Format</p>
+              <p className="text-white font-medium text-sm">PNG</p>
             </div>
-            <div className="p-4 bg-white/5 rounded-xl border border-white/10">
-              <p className="text-white/50 text-sm mb-1">Face Restored</p>
-              <p className="text-white font-medium text-lg">{faceEnhance ? "Yes" : "No"}</p>
+            <div className="p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-lg">
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Face Restored</p>
+              <p className="text-white font-medium text-sm">{faceEnhance ? "Yes" : "No"}</p>
             </div>
-            <div className="p-4 bg-white/5 rounded-xl border border-white/10">
-              <p className="text-white/50 text-sm mb-1">Scale Factor</p>
-              <p className="text-white font-medium text-lg">{scale}x</p>
+            <div className="p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-lg">
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Scale Factor</p>
+              <p className="text-white font-medium text-sm">{scale}x</p>
             </div>
           </div>
         </div>

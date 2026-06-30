@@ -16,57 +16,57 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6">
           <div className="flex items-center gap-4 mb-4">
-            <div className="p-3 bg-purple-500/20 text-purple-400 rounded-xl">
+            <div className="p-3 bg-blue-600/20 text-blue-400 rounded-xl border border-blue-500/20">
               <ImageIcon className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-sm text-white/60 font-medium">Images Enhanced</p>
-              <h3 className="text-2xl font-bold text-white">128</h3>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Images Enhanced</p>
+              <h3 className="text-2xl font-bold text-white mt-1">128</h3>
             </div>
           </div>
         </div>
         
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6">
           <div className="flex items-center gap-4 mb-4">
-            <div className="p-3 bg-blue-500/20 text-blue-400 rounded-xl">
+            <div className="p-3 bg-purple-600/20 text-purple-400 rounded-xl border border-purple-500/20">
               <Video className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-sm text-white/60 font-medium">Videos Enhanced</p>
-              <h3 className="text-2xl font-bold text-white">12</h3>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Videos Enhanced</p>
+              <h3 className="text-2xl font-bold text-white mt-1">12</h3>
             </div>
           </div>
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6">
           <div className="flex items-center gap-4 mb-4">
-            <div className="p-3 bg-green-500/20 text-green-400 rounded-xl">
+            <div className="p-3 bg-green-500/20 text-green-400 rounded-xl border border-green-500/20">
               <Clock className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-sm text-white/60 font-medium">Processing Time Saved</p>
-              <h3 className="text-2xl font-bold text-white">14h 20m</h3>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Time Saved</p>
+              <h3 className="text-2xl font-bold text-white mt-1">14h 20m</h3>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
+      <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden">
         <div className="p-6 border-b border-white/10 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">Recent Operations</h2>
+          <h2 className="text-lg font-bold text-white">Recent Operations</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="p-4 text-sm font-medium text-white/60">File Name</th>
-                <th className="p-4 text-sm font-medium text-white/60">Type</th>
-                <th className="p-4 text-sm font-medium text-white/60">Date</th>
-                <th className="p-4 text-sm font-medium text-white/60">Status</th>
-                <th className="p-4 text-sm font-medium text-white/60">Size</th>
-                <th className="p-4 text-sm font-medium text-white/60 text-right">Actions</th>
+              <tr className="border-b border-white/10 bg-black/20">
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">File Name</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Type</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Date</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Status</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Size</th>
+                <th className="p-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">

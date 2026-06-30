@@ -23,19 +23,19 @@ export default function FileUploader({ onFileSelect, accept, selectedFile, onCle
 
   if (selectedFile) {
     return (
-      <div className="w-full p-6 border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm flex items-center justify-between">
+      <div className="w-full p-6 border border-white/10 rounded-2xl bg-white/5 backdrop-blur-lg flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-purple-500/20 text-purple-400 rounded-xl">
+          <div className="p-3 bg-blue-600/20 text-blue-400 rounded-xl border border-blue-500/20">
             <FileIcon className="w-6 h-6" />
           </div>
           <div>
             <p className="text-white font-medium truncate max-w-[200px] sm:max-w-xs">{selectedFile.name}</p>
-            <p className="text-white/50 text-sm">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
+            <p className="text-slate-400 text-sm">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
           </div>
         </div>
         <button
           onClick={onClear}
-          className="p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+          className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-xl transition-colors border border-transparent hover:border-white/10"
         >
           <X className="w-5 h-5" />
         </button>
@@ -46,22 +46,22 @@ export default function FileUploader({ onFileSelect, accept, selectedFile, onCle
   return (
     <div
       {...getRootProps()}
-      className={`w-full p-12 border-2 border-dashed rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all ${
+      className={`w-full p-12 border border-dashed rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all backdrop-blur-lg ${
         isDragReject
           ? "border-red-500 bg-red-500/10"
           : isDragActive
-          ? "border-purple-500 bg-purple-500/10"
+          ? "border-blue-500 bg-blue-500/10"
           : "border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30"
       }`}
     >
       <input {...getInputProps()} />
-      <div className="p-4 bg-white/10 rounded-full mb-4">
-        <UploadCloud className={`w-8 h-8 ${isDragReject ? "text-red-400" : "text-white"}`} />
+      <div className="p-4 bg-white/5 border border-white/10 rounded-xl mb-4">
+        <UploadCloud className={`w-8 h-8 ${isDragReject ? "text-red-400" : "text-blue-400"}`} />
       </div>
       <p className="text-white text-lg font-medium mb-2">
         {isDragActive ? "Drop the file here..." : "Drag & drop a file here"}
       </p>
-      <p className="text-white/50 text-sm text-center max-w-sm">
+      <p className="text-slate-400 text-sm text-center max-w-sm">
         Or click to browse. Supports high-resolution files up to {maxSize / 1024 / 1024}MB.
       </p>
     </div>

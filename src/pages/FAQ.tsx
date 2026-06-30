@@ -29,7 +29,7 @@ export default function FAQ() {
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Frequently Asked Questions</h1>
-        <p className="text-xl text-white/60">
+        <p className="text-xl text-slate-400">
           Everything you need to know about AuraUpscale.
         </p>
       </div>
@@ -39,15 +39,15 @@ export default function FAQ() {
           <Accordion.Item 
             key={i} 
             value={`item-${i}`}
-            className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden data-[state=open]:border-purple-500/50 transition-colors"
+            className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg data-[state=open]:border-blue-500/50 transition-colors"
           >
             <Accordion.Header>
               <Accordion.Trigger className="w-full flex items-center justify-between p-6 text-left focus:outline-none group">
-                <span className="text-lg font-medium text-white group-hover:text-purple-400 transition-colors">{faq.question}</span>
-                <ChevronDown className="w-5 h-5 text-white/50 group-data-[state=open]:rotate-180 transition-transform duration-300" />
+                <span className="text-base font-bold text-white group-hover:text-blue-400 transition-colors">{faq.question}</span>
+                <ChevronDown className="w-5 h-5 text-slate-500 group-data-[state=open]:rotate-180 transition-transform duration-300" />
               </Accordion.Trigger>
             </Accordion.Header>
-            <Accordion.Content className="px-6 pb-6 pt-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in text-white/60 leading-relaxed">
+            <Accordion.Content className="px-6 pb-6 pt-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in text-slate-400 text-sm leading-relaxed">
               {faq.answer}
             </Accordion.Content>
           </Accordion.Item>
