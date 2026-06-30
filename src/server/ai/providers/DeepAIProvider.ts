@@ -1,5 +1,6 @@
+import fs from "fs";
 import { BaseProvider } from "./BaseProvider";
-import { EnhancementOptions } from "../../types";
+import { EnhancementOptions } from "../types";
 
 export class DeepAIProvider extends BaseProvider {
   name = "DeepAI";
@@ -9,18 +10,17 @@ export class DeepAIProvider extends BaseProvider {
   }
 
   async enhanceImage(filePath: string, mimeType: string, options: EnhancementOptions, getPublicUrl: (filePath: string) => string): Promise<string> {
-    const fileUrl = getPublicUrl(filePath);
+    const fileBuffer = await fs.promises.readFile(filePath);
     
-    const formData = new URLSearchParams();
-    formData.append("image", fileUrl);
+    const form = new FormData();
+    form.append("image", new Blob([fileBuffer], { type: mimeType }));
     
     const promise = fetch("https://api.deepai.org/api/torch-srgan", {
       method: "POST",
       headers: {
-        "api-key": process.env.DEEPAI_API_KEY || "",
-        "Content-Type": "application/x-www-form-urlencoded"
+        "api-key": process.env.DEEPAI_API_KEY || ""
       },
-      body: formData.toString(),
+      body: form as any,
     }).then(async (res) => {
       if (!res.ok) throw new Error(`DeepAI Error: ${await res.text()}`);
       const data = await res.json();

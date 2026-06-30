@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { AIManager } from "./src/server/ai/manager";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -20,6 +20,10 @@ app.use(helmet({
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -115,6 +119,27 @@ app.get("/api/stats", async (req, res) => {
   res.json({ providers: aiManager.getProviderStats() });
 });
 
+app.get("/api/health", async (req, res) => {
+  try {
+    const baseUrl = process.env.APP_URL || `${req.protocol}://${req.get("host")}`;
+    const results = await aiManager.testProviders(baseUrl);
+    
+    if (req.accepts('html')) {
+      let html = '<html><head><title>Health Check</title><style>body{font-family:sans-serif;background:#0f172a;color:#fff;padding:2rem}table{width:100%;border-collapse:collapse;margin-top:1rem}th,td{padding:0.75rem;border-bottom:1px solid #334155;text-align:left}.working{color:#4ade80}.inactive{color:#94a3b8}.failed{color:#f87171}</style></head><body>';
+      html += '<h1>API Providers Health Status</h1><table><tr><th>Provider</th><th>Status</th><th>Latency</th><th>Reason</th></tr>';
+      for (const r of results) {
+        html += `<tr class="${r.status}"><td>${r.provider}</td><td>${r.status}</td><td>${r.latencyMs ? r.latencyMs+'ms' : '-'}</td><td>${r.reason || '-'}</td></tr>`;
+      }
+      html += '</table></body></html>';
+      return res.send(html);
+    }
+    
+    res.json({ status: "ok", results });
+  } catch (error: any) {
+    res.status(500).json({ status: "error", error: error.message });
+  }
+});
+
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
@@ -130,7 +155,7 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
+  app.listen(Number(PORT), "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
   });
 }

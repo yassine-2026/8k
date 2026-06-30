@@ -1,6 +1,6 @@
 import fs from "fs";
 import { BaseProvider } from "./BaseProvider";
-import { EnhancementOptions } from "../../types";
+import { EnhancementOptions } from "../types";
 
 export class HuggingFaceProvider extends BaseProvider {
   name = "HuggingFace";

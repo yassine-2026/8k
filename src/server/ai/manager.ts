@@ -1,3 +1,7 @@
+import fs from "fs";
+import path from "path";
+import os from "os";
+import { v4 as uuidv4 } from "uuid";
 import { AIProvider, EnhancementOptions, EnhancementResult, ProviderStats } from "./types";
 import { ReplicateProvider } from "./providers/ReplicateProvider";
 import { HuggingFaceProvider } from "./providers/HuggingFaceProvider";
@@ -29,6 +33,49 @@ export class AIManager {
 
   getProviderStats(): ProviderStats[] {
     return this.providers.map(p => p.getStats());
+  }
+
+  async testProviders(baseUrl: string) {
+    const results = [];
+    const testImageBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+    const testImageBuffer = Buffer.from(testImageBase64, "base64");
+    const testFilePath = path.join(os.tmpdir(), `test_${uuidv4()}.png`);
+    
+    await fs.promises.writeFile(testFilePath, testImageBuffer);
+    const testPublicUrl = `${baseUrl}/public-temp/${path.basename(testFilePath)}`;
+
+    for (const provider of this.providers) {
+      if (!provider.isAvailable()) {
+        results.push({
+          provider: provider.name,
+          status: "inactive",
+          reason: "API Key not configured."
+        });
+        continue;
+      }
+
+      try {
+        const startTime = Date.now();
+        // Skip actual enhancement for cloudinary/replicate during fast health check to save quota, unless required.
+        // We will do a full test as requested by user.
+        await provider.enhanceImage(testFilePath, "image/png", { scale: 2, faceEnhance: false }, () => testPublicUrl);
+        results.push({
+          provider: provider.name,
+          status: "working",
+          latencyMs: Date.now() - startTime
+        });
+      } catch (error: any) {
+        results.push({
+          provider: provider.name,
+          status: "failed",
+          reason: error.message
+        });
+      }
+    }
+
+    try { await fs.promises.unlink(testFilePath); } catch (e) {}
+    
+    return results;
   }
 
   private async sleep(ms: number) {

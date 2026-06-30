@@ -1,5 +1,6 @@
+import fs from "fs";
 import { BaseProvider } from "./BaseProvider";
-import { EnhancementOptions } from "../../types";
+import { EnhancementOptions } from "../types";
 
 export class FalProvider extends BaseProvider {
   name = "Fal.ai";
@@ -9,7 +10,9 @@ export class FalProvider extends BaseProvider {
   }
 
   async enhanceImage(filePath: string, mimeType: string, options: EnhancementOptions, getPublicUrl: (filePath: string) => string): Promise<string> {
-    const fileUrl = getPublicUrl(filePath);
+    const fileBuffer = await fs.promises.readFile(filePath);
+    const base64Data = fileBuffer.toString("base64");
+    const dataUri = `data:${mimeType};base64,${base64Data}`;
     
     const promise = fetch("https://fal.run/fal-ai/aura-sr", {
       method: "POST",
@@ -17,7 +20,7 @@ export class FalProvider extends BaseProvider {
         "Authorization": `Key ${process.env.FAL_KEY}`,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ image_url: fileUrl })
+      body: JSON.stringify({ image_url: dataUri })
     }).then(async (res) => {
       if (!res.ok) throw new Error(`Fal.ai Error: ${await res.text()}`);
       const data = await res.json();
